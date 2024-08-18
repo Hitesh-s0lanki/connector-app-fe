@@ -1,0 +1,19 @@
+{
+	"React Functional Component": {
+		"scope": "typescriptreact",
+		"prefix": "sfc",
+		"body": [
+			"type Props = {};",
+			"",
+			"const ${1:ComponentName} = ({}:Props) => {",
+			"  return (",
+			"    <div>",
+			"    </div>",
+			"  );",
+			"};",
+			"",
+			"export default ${1:ComponentName};"
+		],
+		"description": "Create a React Functional Component with TypeScript using type for props"
+	}
+}
