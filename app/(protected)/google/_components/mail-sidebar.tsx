@@ -36,7 +36,7 @@ const links = [
     {
         title: "Meetings",
         icon: MessageSquareTextIcon,
-        href: "/google/drive"
+        href: "/google/meetings"
     },
 ]
 

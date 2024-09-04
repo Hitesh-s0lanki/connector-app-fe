@@ -13,7 +13,10 @@ export async function GET() {
         'https://www.googleapis.com/auth/calendar',
         'https://www.googleapis.com/auth/calendar.events',
         'https://www.googleapis.com/auth/gmail.readonly',
-        'https://mail.google.com'
+        'https://mail.google.com',
+        'https://www.googleapis.com/auth/drive.readonly',
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/drive.file",
       ].join(' '),
       access_type: 'offline',
       prompt: 'consent',
