@@ -17,11 +17,11 @@ export const useGetInbox = () => {
 }
 
 
-export const useGetDriveFiles = (searchQuery: string = "", fileType?: string) => {
+export const useGetDriveFiles = (searchQuery: string = "", fileType?: string, folderId?: string) => {
   return useQuery({
-    queryKey: ["driveFiles", searchQuery, fileType],
+    queryKey: ["driveFiles", searchQuery, fileType, folderId],
     queryFn: async () => {
-      const data = await getDriveFiles({ search: searchQuery, fileType });
+      const data = await getDriveFiles({ search: searchQuery, fileType, folderId });
       return data;
     },
     keepPreviousData: true,

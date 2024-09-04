@@ -12,19 +12,34 @@ import { Search } from "lucide-react";
 const Drive = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [fileType, setFileType] = useState<string | undefined>();
-  const driveFilesQuery = useGetDriveFiles(searchQuery, fileType);
+  const [currentFolderId, setCurrentFolderId] = useState<string | undefined>();  // Add folder ID state
+  const driveFilesQuery = useGetDriveFiles(searchQuery, fileType, currentFolderId);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
   const handleTabChange = (value: string) => {
-    setFileType(value === "docs" ? "application/vnd.google-apps.document" : undefined);
+    switch (value) {
+      case "docs":
+        setFileType("application/vnd.google-apps.document");
+        break;
+      default:
+        setFileType(undefined);
+    }
+  };
+
+  const handleFolderClick = (folderId: string) => {
+    setCurrentFolderId(folderId);  // Set the current folder ID
+  };
+
+  const handleBackClick = () => {
+    setCurrentFolderId(undefined); // Reset to root folder when back is clicked
   };
 
   useEffect(() => {
     driveFilesQuery.refetch();
-  }, [searchQuery, fileType]);
+  }, [searchQuery, fileType, currentFolderId]);
 
   if (driveFilesQuery.isError) {
     return <div>Error: {driveFilesQuery.error.message}</div>;
@@ -43,18 +58,9 @@ const Drive = () => {
             <h1 className="font-semibold text-xl">Google Drive</h1>
 
             <TabsList className="ml-auto">
-              <TabsTrigger
-                value="all"
-                className="text-zinc-600 dark:text-zinc-200"
-              >
-                All files
-              </TabsTrigger>
-              <TabsTrigger
-                value="docs"
-                className="text-zinc-600 dark:text-zinc-200"
-              >
-                Documents
-              </TabsTrigger>
+              <TabsTrigger value="all" className="text-zinc-600 dark:text-zinc-200">All files</TabsTrigger>
+              <TabsTrigger value="docs" className="text-zinc-600 dark:text-zinc-200">Documents</TabsTrigger>
+             
             </TabsList>
           </div>
 
@@ -72,6 +78,12 @@ const Drive = () => {
                 </div>
               </form>
             </div>
+
+            {currentFolderId && (
+              <button onClick={handleBackClick} className="text-blue-600 hover:underline">
+                Back
+              </button>
+            )}
 
             <TabsContent
               value="all"
@@ -95,14 +107,23 @@ const Drive = () => {
                           <TableCell>{file.name}</TableCell>
                           <TableCell>{file.mimeType}</TableCell>
                           <TableCell>
-                            <a
-                              href={file.webViewLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:underline"
-                            >
-                              Open
-                            </a>
+                            {file.mimeType === "application/vnd.google-apps.folder" ? (
+                              <button
+                                onClick={() => handleFolderClick(file.id)}
+                                className="text-blue-600 hover:underline"
+                              >
+                                Open
+                              </button>
+                            ) : (
+                              <a
+                                href={file.webViewLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline"
+                              >
+                                Open
+                              </a>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -144,6 +165,7 @@ const Drive = () => {
                 </Table>
               )}
             </TabsContent>
+            
           </div>
         </Tabs>
       </div>

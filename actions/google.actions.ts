@@ -104,7 +104,7 @@ export const getInbox = async () => {
 //     }
 // }
 
-export const getDriveFiles = async (query: { search?: string, fileType?: string }) => {
+export const getDriveFiles = async (query: { search?: string, fileType?: string, folderId?: string }) => {
     try {
       const token = await currentToken();
   
