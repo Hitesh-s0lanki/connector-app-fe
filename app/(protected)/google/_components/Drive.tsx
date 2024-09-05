@@ -20,12 +20,10 @@ const Drive = () => {
   };
 
   const handleTabChange = (value: string) => {
-    switch (value) {
-      case "docs":
-        setFileType("application/vnd.google-apps.document");
-        break;
-      default:
-        setFileType(undefined);
+    if (value === "docs") {
+      setFileType("mimeType = 'application/vnd.google-apps.document' or mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'");
+    } else {
+      setFileType(undefined);
     }
   };
 
@@ -52,8 +50,7 @@ const Drive = () => {
         <Tabs
           defaultValue="all"
           className="h-full"
-          onValueChange={handleTabChange}
-        >
+          onValueChange={(value) => handleTabChange(value)}        >
           <div className="flex justify-between border-t-2 border-b-2 p-5">
             <h1 className="font-semibold text-xl">Google Drive</h1>
 
