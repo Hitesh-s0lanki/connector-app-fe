@@ -39,6 +39,27 @@ const Drive = () => {
     driveFilesQuery.refetch();
   }, [searchQuery, fileType, currentFolderId]);
 
+
+
+  const getOwner = (owners) => {
+    if (owners && owners.length > 0) {
+      return owners[0].displayName;
+    }
+    return 'Unknown';
+  };
+
+  const getLocation = (file) => {
+    if (file.shared) {
+      return 'Shared with me';
+    }
+    if (file.parents && file.parents.length > 0) {
+      return 'My Drive'; // You might want to fetch the actual folder name if needed
+    }
+    return 'My Drive';
+  };
+
+
+
   if (driveFilesQuery.isError) {
     return <div>Error: {driveFilesQuery.error.message}</div>;
   }
@@ -94,6 +115,8 @@ const Drive = () => {
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>MIME Type</TableHead>
+                      <TableHead>Owner</TableHead>
+                      <TableHead>Location</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -103,6 +126,8 @@ const Drive = () => {
                         <TableRow key={file.id}>
                           <TableCell>{file.name}</TableCell>
                           <TableCell>{file.mimeType}</TableCell>
+                          <TableCell>{getOwner(file.owners)}</TableCell>
+                          <TableCell>{getLocation(file)}</TableCell>
                           <TableCell>
                             {file.mimeType === "application/vnd.google-apps.folder" ? (
                               <button
@@ -146,6 +171,8 @@ const Drive = () => {
                         <TableRow key={file.id}>
                           <TableCell>{file.name}</TableCell>
                           <TableCell>{file.mimeType}</TableCell>
+                          <TableCell>{file.owner}</TableCell>
+                          <TableCell>{file.location}</TableCell>
                           <TableCell>
                             <a
                               href={file.webViewLink}

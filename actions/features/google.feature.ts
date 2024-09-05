@@ -22,6 +22,7 @@ export const useGetDriveFiles = (searchQuery: string = "", fileType?: string, fo
     queryKey: ["driveFiles", searchQuery, fileType, folderId],
     queryFn: async () => {
       const data = await getDriveFiles({ search: searchQuery, fileType, folderId });
+      console.log("The returned Data: ", data);
       return data;
     },
     keepPreviousData: true,
