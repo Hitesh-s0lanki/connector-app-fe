@@ -9,7 +9,7 @@ const GoogleLayout = ({
 }: Props) => {
     return (
         <div className=" flex h-full w-full">
-            <MailSideBar isCollapsed={false} />
+            {/* <MailSideBar isCollapsed={false} /> */}
             {children}
         </div>
     );

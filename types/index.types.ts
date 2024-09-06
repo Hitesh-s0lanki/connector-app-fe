@@ -19,3 +19,9 @@ export type Inbox = {
     body: string;
     read: boolean;
 }
+
+export type DriveFile = {
+    id: string;
+    name: string;
+    mimeType: string;
+}
