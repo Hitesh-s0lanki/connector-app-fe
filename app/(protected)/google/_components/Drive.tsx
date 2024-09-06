@@ -271,8 +271,8 @@ const Drive = () => {
   }
 
   return (
-    <div className="flex-1 flex flex-col w-full">
-      <div className="h-full w-full flex flex-col gap-5 border-r-2">
+    <div className="flex-1 flex flex-col w-full ">
+      <div className="h-full w-full flex flex-col gap-5 border-r-2 ">
         <Tabs
           defaultValue="all"
           className="h-full"
@@ -323,47 +323,38 @@ const Drive = () => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>MIME Type</TableHead>
-                        <TableHead>Owner</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {!driveFilesQuery.data?.message &&
-                        driveFilesQuery.data?.driveFiles?.map((file) => (
-                          <TableRow key={file.id}>
-                            <TableCell>{file.name}</TableCell>
-                            <TableCell>{file.mimeType}</TableCell>
-                            <TableCell>{getOwner(file.owners)}</TableCell>
-                            <TableCell>{getLocation(file)}</TableCell>
-                            <TableCell>
-                              {file.mimeType === "application/vnd.google-apps.folder" ? (
-                                <button
-                                  onClick={() => handleFolderClick(file.id)}
-                                  className="text-blue-600 hover:underline"
-                                >
-                                  Open
-                                </button>
-                              ) : (
-                                <a
-                                  href={file.webViewLink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 hover:underline"
-                                >
-                                  Open
-                                </a>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                )}
-              </TabsContent>
-            ))}
+                      <TableHead>Name</TableHead>
+<TableHead>MIME Type</TableHead>
+<TableHead>Owner</TableHead>
+<TableHead>Location</TableHead>
+</TableRow>
+</TableHeader>
+<TableBody>
+  {!driveFilesQuery.data?.message &&
+    driveFilesQuery.data?.driveFiles?.map((file) => (
+      <TableRow
+        key={file.id}
+        onClick={() => {
+          if (file.mimeType === "application/vnd.google-apps.folder") {
+            handleFolderClick(file.id);
+          } else {
+            window.open(file.webViewLink, "_blank", "noopener,noreferrer");
+          }
+        }}
+        className="cursor-pointer"
+      >
+        <TableCell>{file.name}</TableCell>
+        <TableCell>{file.mimeType}</TableCell>
+        <TableCell>{getOwner(file.owners)}</TableCell>
+        <TableCell>{getLocation(file)}</TableCell>
+        <TableCell></TableCell>
+      </TableRow>
+    ))}
+</TableBody>
+</Table>
+)}
+</TabsContent>
+))}
           </div>
         </Tabs>
       </div>

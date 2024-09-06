@@ -3,7 +3,7 @@ import Drive from "../_components/Drive";
 
 function page() {
   return (
-    <div>
+    <div className="w-full">
         <Drive />
     </div>
   )

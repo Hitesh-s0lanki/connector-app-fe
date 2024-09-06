@@ -5,7 +5,7 @@ import { Raleway } from "next/font/google";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { GoalIcon, Link2, Linkedin } from "lucide-react";
+import { GoalIcon, Link2,File,Linkedin } from "lucide-react";
 
 type Props = {};
 
@@ -31,6 +31,12 @@ const routes = [
         label: "Linkedin",
         icon: Linkedin,
         href: "/linkedin",
+        color: "text-[#005EE9]",
+    },
+    {
+        label: "Drive",
+        icon: File,
+        href: "/google/drive",
         color: "text-[#005EE9]",
     },
 ];

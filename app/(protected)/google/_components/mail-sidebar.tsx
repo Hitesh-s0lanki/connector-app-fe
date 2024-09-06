@@ -28,11 +28,7 @@ const links = [
         icon: Calendar,
         href: "/google/calendar"
     },
-    {
-        title: "Drive",
-        icon: File,
-        href: "/google/drive"
-    },
+  
     {
         title: "Meetings",
         icon: MessageSquareTextIcon,
