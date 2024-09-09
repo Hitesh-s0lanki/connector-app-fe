@@ -25,3 +25,19 @@ export type DriveFile = {
     name: string;
     mimeType: string;
 }
+export type CalendarEvent={
+    id:string;
+    summary:string;
+    description:string;
+    start:Date;
+    end:Date;
+    location:string;
+    attendees:string[];
+    organizer:string;
+    status:string;
+    visibility:string;
+    recurrence:string;
+    reminders:string;
+    eventType:string;
+    calendarId:string;
+}

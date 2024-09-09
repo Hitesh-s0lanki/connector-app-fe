@@ -3,7 +3,7 @@
 import { currentToken } from "@/lib/auth";
 import { googleCredSchema, googleCredSchemaType } from "@/schemas/index.schema";
 import axios, { AxiosError } from "axios";
-import { Inbox, DriveFile } from "@/types/index.types";
+import { Inbox, DriveFile,CalendarEvent } from "@/types/index.types";
 
 export const googleCred = async (values: googleCredSchemaType) => {
     try {
@@ -139,3 +139,56 @@ export const getDriveFiles = async (query: { search?: string, fileType?: string,
       }
     }
   } 
+
+  export const getCalendarEvents = async (query: { search?: string, eventType?: string, calendarId?: string }) => {
+    try {
+      const token = await currentToken();
+  
+      if (!token) {
+        throw new Error("User Access token not found!");
+      }
+  
+      const { data: calendarEvents } = await axios.create({
+        baseURL: process.env.API_URL,
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: query,
+      }).get(`/google/calendar`);
+  
+      return {
+        calendarEvents: calendarEvents as CalendarEvent[],
+        message: null
+      };
+    } catch (error: any) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          return {
+            message: (error.response?.data as any).message.toString(),
+            calendarEvents: null,
+          };
+        }
+      }
+      return {
+        calendarEvents: null,
+        message: error.message
+      };
+    }
+  };
+  
+  // export const getCalendarEvents = async (query: { search?: string, eventType?: string, calendarId?: string }) => {
+  //   const token = await currentToken();
+  
+  //   if (!token) {
+  //     throw new Error("User Access token not found!");
+  //   }
+  
+  //   const { data: calendarEvents } = await axios.get(`${process.env.API_URL}/google/calendar`, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     },
+  //     params: query,
+  //   });
+  
+  //   return calendarEvents;
+  // };

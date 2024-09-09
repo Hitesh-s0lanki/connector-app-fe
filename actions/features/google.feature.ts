@@ -2,7 +2,8 @@ import { currentToken } from "@/lib/auth";
 import { Inbox } from "@/types/index.types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { getInbox, getDriveFiles } from "../google.actions";
+import { getInbox, getDriveFiles,getCalendarEvents } from "../google.actions";
+import { AxiosError } from "axios";
 
 export const useGetInbox = () => {
     const query = useQuery({
@@ -28,3 +29,30 @@ export const useGetDriveFiles = (searchQuery: string = "", fileType?: string, fo
     keepPreviousData: true,
   });
 };
+
+// export const useGetCalendarEvents = (searchQuery: string = "", eventType?: string, calendarId?: string) => {
+//   return useQuery({
+//     queryKey: ["calendarEvents", searchQuery, eventType, calendarId],
+//     queryFn: async () => {
+//       const data = await getCalendarEvents({ search: searchQuery, eventType, calendarId });
+//       console.log("The returned Data: ", data);
+//       return data;
+//     },
+//     keepPreviousData: true,
+//   });
+// };
+
+// google.feature.ts
+
+export const useGetCalendarEvents = (searchQuery: string = "", eventType?: string, calendarId?: string) => {
+  return useQuery({
+    queryKey: ["calendarEvents", searchQuery, eventType, calendarId],
+    queryFn: async () => {
+      const data = await getCalendarEvents({ search: searchQuery, eventType, calendarId });
+      return data;
+    },
+    keepPreviousData: true,
+  });
+};
+
+
