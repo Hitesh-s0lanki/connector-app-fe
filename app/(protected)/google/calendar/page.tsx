@@ -4,7 +4,9 @@ type Props = {};
 
 const GoogleCanlendar = ({ }: Props) => {
     return (
+        <div className="w-full h-screen">
         <Calendar2 />
+        </div>
     );
 };
 
