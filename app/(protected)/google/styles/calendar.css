@@ -1,0 +1,66 @@
+/* FullCalendar Event Styles */
+.fc-event {
+    background-color: rgb(38, 38, 38) !important;
+    color: white !important;
+    border: none !important;
+  }
+  
+.fc-event-title-container,.fc-event-time{
+color: #ffffff !important;
+font: 1em sans-serif !important;
+}
+
+.fc-event:hover {
+    background-color: #333 !important; /* Slightly lighter for hover effect */
+    color: white !important;
+  }
+  
+  /* Adjusting the header and toolbar */
+  
+  .fc-toolbar-title {
+    color: black !important;
+  }
+  
+  .fc-button {
+    background-color: #55555500 !important;
+    color: rgb(0, 0, 0) !important;
+    border: 1px solid black !important;
+  }
+  
+  .fc-button:active{
+    border: none !important;
+    background-color: #55555500 !important;
+  }
+  
+  
+  /* For the calendar view */
+  .fc-daygrid-day {
+    color: white !important;
+  }
+  
+  .fc-daygrid-day-top {
+    color: white !important;
+  }
+  
+  .fc-daygrid-day-number {
+    color: white !important;
+  }
+  
+  .fc-daygrid-day-frame {
+    border-color: #444 !important; /* Adjust the border color if needed */
+  }
+
+  
+  .fc-event {
+    padding: 5px;
+    font-size: 12px;
+  }
+  
+  .fc-daygrid-day-top {
+    font-size: 14px;
+  }
+  
+  .fc-button {
+    padding: 8px 16px;
+  }
+  

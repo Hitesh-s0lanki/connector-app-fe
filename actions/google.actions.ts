@@ -154,7 +154,10 @@ export const getDriveFiles = async (query: { search?: string, fileType?: string,
           Authorization: `Bearer ${token}`
         },
         params: query,
-      }).get(`/google/calendar`);
+      }
+    
+    ).get(`/google/calendar`);
+      // console.log(calendarEvents)
   
       return {
         calendarEvents: calendarEvents as CalendarEvent[],

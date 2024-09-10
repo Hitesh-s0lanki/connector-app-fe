@@ -49,6 +49,7 @@ export const useGetCalendarEvents = (searchQuery: string = "", eventType?: strin
     queryKey: ["calendarEvents", searchQuery, eventType, calendarId],
     queryFn: async () => {
       const data = await getCalendarEvents({ search: searchQuery, eventType, calendarId });
+      // console.log("this is from features ",{data})
       return data;
     },
     keepPreviousData: true,
