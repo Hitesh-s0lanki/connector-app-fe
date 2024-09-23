@@ -178,7 +178,42 @@ export const getDriveFiles = async (query: { search?: string, fileType?: string,
       };
     }
   };
+
+  export const createGoogleCalendarEvent = async (eventData: any) => {
+    try {
+      const token = await currentToken();
   
+      if (!token) {
+        throw new Error("User Access token not found!");
+      }
+  
+      const { data: createdEvent } = await axios.create({
+        baseURL: process.env.API_URL,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).post(`/google/event`, eventData);
+      console.log(createdEvent)
+      return {
+        createdEvent,
+        message: null,
+      };
+    } catch (error: any) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          return {
+            message: (error.response?.data as any).message.toString(),
+            createdEvent: null,
+          };
+        }
+      }
+  
+      return {
+        createdEvent: null,
+        message: error.message,
+      };
+    }
+  };
   // export const getCalendarEvents = async (query: { search?: string, eventType?: string, calendarId?: string }) => {
   //   const token = await currentToken();
   

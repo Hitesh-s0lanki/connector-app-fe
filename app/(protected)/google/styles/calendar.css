@@ -1,66 +1,71 @@
 /* FullCalendar Event Styles */
 .fc-event {
-    background-color: rgb(38, 38, 38) !important;
+    border: none !important; /* No border */
+    color: #000000 !important; /* Dark text color */
+    padding: 0 !important; /* Remove padding */
+    font-size: 12px !important; /* Adjust font size if necessary */
+}
+.fc-event-main-frame{
+    padding: 1px;
+    color: white !important; 
+}
+.fc-timegrid-event-harness .fc-event-time , .fc-timegrid-event-harness .fc-event-title-container {
     color: white !important;
-    border: none !important;
-  }
-  
-.fc-event-title-container,.fc-event-time{
-color: #ffffff !important;
-font: 1em sans-serif !important;
+
+}
+.fc-event-title-container, .fc-event-time {
+    color: #000000 !important;
+    font: 1em sans-serif !important;
 }
 
-.fc-event:hover {
-    background-color: #333 !important; /* Slightly lighter for hover effect */
-    color: white !important;
-  }
-  
-  /* Adjusting the header and toolbar */
-  
-  .fc-toolbar-title {
-    color: black !important;
-  }
-  
-  .fc-button {
-    background-color: #55555500 !important;
-    color: rgb(0, 0, 0) !important;
-    border: 1px solid black !important;
-  }
-  
-  .fc-button:active{
-    border: none !important;
-    background-color: #55555500 !important;
-  }
-  
-  
-  /* For the calendar view */
-  .fc-daygrid-day {
-    color: white !important;
-  }
-  
-  .fc-daygrid-day-top {
-    color: white !important;
-  }
-  
-  .fc-daygrid-day-number {
-    color: white !important;
-  }
-  
-  .fc-daygrid-day-frame {
-    border-color: #444 !important; /* Adjust the border color if needed */
-  }
 
-  
-  .fc-event {
-    padding: 5px;
-    font-size: 12px;
-  }
-  
-  .fc-daygrid-day-top {
-    font-size: 14px;
-  }
-  
-  .fc-button {
-    padding: 8px 16px;
-  }
-  
+.fc-event:hover {
+    color: black !important;
+}
+
+/* Button styles */
+.fc-button {
+    background-color: #f1f3f4 !important; /* Light background for buttons (Google Calendar-like) */
+    color: #333 !important; /* Dark text color for readability */
+    border: 1px solid #d3d3d3 !important; /* Light grey border */
+    padding: 8px 16px; /* Adjust padding */
+}
+
+.fc-button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Toolbar and header styles */
+.fc-toolbar-title {
+    color: #202124 !important; /* Dark text color for the toolbar title */
+    font-size: 1.2em; /* Larger font size for better readability */
+}
+
+.fc-button-primary {
+    background-color: #e0e0e0 !important; /* Lighter grey for primary buttons */
+    color: #202124 !important; /* Dark text color */
+}
+
+.fc-button-primary::after {
+    background-color: #e0e0e0 !important; /* Lighter grey for primary buttons */
+    color: #202124 !important; /* Dark text color */
+}
+
+/* Calendar view styles */
+.fc-daygrid-day {
+    color: #202124 !important; /* Dark text color for day numbers */
+}
+
+.fc-daygrid-day-top {
+    color: #202124 !important;
+    font-size: 14px; /* Adjust font size */
+}
+
+.fc-daygrid-day-number {
+    color: #202124 !important;
+}
+
+.fc-daygrid-day-frame {
+    border-color: #d3d3d3 !important; /* Light grey border for day cells */
+}

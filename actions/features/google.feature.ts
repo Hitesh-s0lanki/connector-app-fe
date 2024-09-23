@@ -56,4 +56,3 @@ export const useGetCalendarEvents = (searchQuery: string = "", eventType?: strin
   });
 };
 
-
