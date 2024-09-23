@@ -1,218 +1,72 @@
-
-
-// "use client";
-
-// import { useGetDriveFiles } from "@/actions/features/google.feature";
-// import { Input } from "@/components/ui/input";
-// import { useState, useEffect } from "react";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-// import { Search } from "lucide-react";
-
-// const Drive = () => {
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const [fileType, setFileType] = useState<string | undefined>();
-//   const [currentFolderId, setCurrentFolderId] = useState<string | undefined>();  // Add folder ID state
-//   const driveFilesQuery = useGetDriveFiles(searchQuery, fileType, currentFolderId);
-
-//   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setSearchQuery(event.target.value);
-//   };
-
-//   const handleTabChange = (value: string) => {
-//     if (value === "docs") {
-//       setFileType("mimeType = 'application/vnd.google-apps.document' or mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'");
-//     } else {
-//       setFileType(undefined);
-//     }
-//   };
-
-//   const handleFolderClick = (folderId: string) => {
-//     setCurrentFolderId(folderId);  // Set the current folder ID
-//   };
-
-//   const handleBackClick = () => {
-//     setCurrentFolderId(undefined); // Reset to root folder when back is clicked
-//   };
-
-//   useEffect(() => {
-//     driveFilesQuery.refetch();
-//   }, [searchQuery, fileType, currentFolderId]);
-
-
-
-//   const getOwner = (owners) => {
-//     if (owners && owners.length > 0) {
-//       return owners[0].displayName;
-//     }
-//     return 'Unknown';
-//   };
-
-//   const getLocation = (file) => {
-//     if (file.shared) {
-//       return 'Shared with me';
-//     }
-//     if (file.parents && file.parents.length > 0) {
-//       return 'My Drive'; // You might want to fetch the actual folder name if needed
-//     }
-//     return 'My Drive';
-//   };
-
-
-
-//   if (driveFilesQuery.isError) {
-//     return <div>Error: {driveFilesQuery.error.message}</div>;
-//   }
-
-//   return (
-//     // <div className="h-full w-full grid grid-cols-2 border-r-2">
-//     <div className="flex-1 flex flex-col w-full">
-//       <div className="h-full w-full flex flex-col gap-5 border-r-2">
-//         <Tabs
-//           defaultValue="all"
-//           className="h-full"
-//           onValueChange={(value) => handleTabChange(value)}        >
-//           <div className="flex justify-between border-t-2 border-b-2 p-5">
-//             <h1 className="font-semibold text-xl">Google Drive</h1>
-
-//             <TabsList className="ml-auto">
-//               <TabsTrigger value="all" className="text-zinc-600 dark:text-zinc-200">All files</TabsTrigger>
-//               <TabsTrigger value="docs" className="text-zinc-600 dark:text-zinc-200">Documents</TabsTrigger>
-             
-//             </TabsList>
-//           </div>
-
-//           <div className="flex-1 flex flex-col gap-2 h-full p-4">
-//             <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-1">
-//               <form>
-//                 <div className="relative">
-//                   <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-//                   <Input
-//                     placeholder="Search"
-//                     className="pl-8"
-//                     value={searchQuery}
-//                     onChange={handleSearchChange}
-//                   />
-//                 </div>
-//               </form>
-//             </div>
-
-//             {currentFolderId && (
-//               <button onClick={handleBackClick} className="text-blue-600 hover:underline">
-//                 Back
-//               </button>
-//             )}
-
-//             <TabsContent
-//               value="all"
-//               className="m-0 flex-1 max-h-full overflow-auto"
-//             >
-//               {driveFilesQuery.isLoading ? (
-//                 <div>Loading...</div>
-//               ) : (
-//                 <Table>
-//                   <TableHeader>
-//                     <TableRow>
-//                       <TableHead>Name</TableHead>
-//                       <TableHead>MIME Type</TableHead>
-//                       <TableHead>Owner</TableHead>
-//                       <TableHead>Location</TableHead>
-//                       <TableHead>Actions</TableHead>
-//                     </TableRow>
-//                   </TableHeader>
-//                   <TableBody>
-//                     {!driveFilesQuery.data?.message &&
-//                       driveFilesQuery.data?.driveFiles?.map((file) => (
-//                         <TableRow key={file.id}>
-//                           <TableCell>{file.name}</TableCell>
-//                           <TableCell>{file.mimeType}</TableCell>
-//                           <TableCell>{getOwner(file.owners)}</TableCell>
-//                           <TableCell>{getLocation(file)}</TableCell>
-//                           <TableCell>
-//                             {file.mimeType === "application/vnd.google-apps.folder" ? (
-//                               <button
-//                                 onClick={() => handleFolderClick(file.id)}
-//                                 className="text-blue-600 hover:underline"
-//                               >
-//                                 Open
-//                               </button>
-//                             ) : (
-//                               <a
-//                                 href={file.webViewLink}
-//                                 target="_blank"
-//                                 rel="noopener noreferrer"
-//                                 className="text-blue-600 hover:underline"
-//                               >
-//                                 Open
-//                               </a>
-//                             )}
-//                           </TableCell>
-//                         </TableRow>
-//                       ))}
-//                   </TableBody>
-//                 </Table>
-//               )}
-//             </TabsContent>
-//             <TabsContent value="docs" className="m-0">
-//               {driveFilesQuery.isLoading ? (
-//                 <div>Loading...</div>
-//               ) : (
-//                 <Table>
-//                   <TableHeader>
-//                     <TableRow>
-//                       <TableHead>Name</TableHead>
-//                       <TableHead>MIME Type</TableHead>
-//                       <TableHead>Actions</TableHead>
-//                     </TableRow>
-//                   </TableHeader>
-//                   <TableBody>
-//                     {!driveFilesQuery.data?.message &&
-//                       driveFilesQuery.data?.driveFiles?.map((file) => (
-//                         <TableRow key={file.id}>
-//                           <TableCell>{file.name}</TableCell>
-//                           <TableCell>{file.mimeType}</TableCell>
-//                           <TableCell>{file.owner}</TableCell>
-//                           <TableCell>{file.location}</TableCell>
-//                           <TableCell>
-//                             <a
-//                               href={file.webViewLink}
-//                               target="_blank"
-//                               rel="noopener noreferrer"
-//                               className="text-blue-600 hover:underline"
-//                             >
-//                               Open
-//                             </a>
-//                           </TableCell>
-//                         </TableRow>
-//                       ))}
-//                   </TableBody>
-//                 </Table>
-//               )}
-//             </TabsContent>
-            
-//           </div>
-//         </Tabs>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Drive;
-
 "use client";
-
-import React, { useState, useEffect } from 'react';
-import { useGetDriveFiles } from "@/actions/features/google.feature";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useGetDriveFiles, useGetFolderDetails } from "../../../../actions/features/google.feature";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search } from "lucide-react";
+import { Search, FolderIcon, FileIcon } from "lucide-react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { useToast } from '../../../../components/hooks/use-toast'
+import { getFolderDetails } from '@/actions/google.actions';
+import { Spinner } from '@/components/ui/spinner';
 
-const Drive = () => {
+interface DriveProps {
+  initialFolderId?: string;
+}
+
+interface FolderDetails {
+  id: string;
+  name: string;
+  parents?: string[];
+}
+
+const Drive: React.FC<DriveProps> = ({ initialFolderId }) => {
+  const router = useRouter();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [fileType, setFileType] = useState<string | undefined>();
-  const [currentFolderId, setCurrentFolderId] = useState<string | undefined>();
+  const [currentFolderId, setCurrentFolderId] = useState<string | undefined>(initialFolderId);
+  const [folderHierarchy, setFolderHierarchy] = useState<FolderDetails[]>([]);
+  
   const driveFilesQuery = useGetDriveFiles(searchQuery, fileType, currentFolderId);
+  const folderDetailsQuery = useGetFolderDetails(currentFolderId || '');
+
+  const buildFolderHierarchy = useCallback(async (folderId: string) => {
+    const hierarchy: FolderDetails[] = [];
+    let currentId = folderId;
+
+    while (currentId) {
+      try {
+        const folderDetails = await getFolderDetails(currentId);
+        if (folderDetails.folderDetails) {
+          hierarchy.unshift(folderDetails.folderDetails);
+          currentId = folderDetails.folderDetails.parents?.[0];
+        } else {
+          break;
+        }
+      } catch (error) {
+        console.error('Error fetching folder details:', error);
+        break;
+      }
+    }
+
+    return hierarchy;
+  }, []);
+
+  useEffect(() => {
+    const initializeFolderHierarchy = async () => {
+      if (initialFolderId) {
+        setCurrentFolderId(initialFolderId);
+        const hierarchy = await buildFolderHierarchy(initialFolderId);
+        setFolderHierarchy(hierarchy);
+      } else {
+        setFolderHierarchy([]);
+      }
+    };
+
+    initializeFolderHierarchy();
+  }, [initialFolderId, buildFolderHierarchy]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -220,6 +74,9 @@ const Drive = () => {
 
   const handleTabChange = (value: string) => {
     switch (value) {
+      case "folders":
+        setFileType("mimeType = 'application/vnd.google-apps.folder'");
+        break;
       case "docs":
         setFileType("mimeType = 'application/vnd.google-apps.document' or mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'");
         break;
@@ -237,26 +94,53 @@ const Drive = () => {
     }
   };
 
-  const handleFolderClick = (folderId: string) => {
-    setCurrentFolderId(folderId);
+  const handleFolderClick = async (folderId: string) => {
+    try {
+      const newHierarchy = await buildFolderHierarchy(folderId);
+      setCurrentFolderId(folderId);
+      setFolderHierarchy(newHierarchy);
+      router.push(`/google/drive/${folderId}`);
+      driveFilesQuery.refetch(); 
+    } catch (error) {
+      console.error('Failed to navigate to folder:', error);
+      toast({
+        title: "Error",
+        description: "Failed to navigate to the selected folder. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleBackClick = () => {
-    setCurrentFolderId(undefined);
+    if (folderHierarchy.length > 1) {
+      const newHierarchy = folderHierarchy.slice(0, -1);
+      const parentFolder = newHierarchy[newHierarchy.length - 1];
+      setCurrentFolderId(parentFolder.id);
+      setFolderHierarchy(newHierarchy);
+      router.push(`/google/drive/${parentFolder.id}`);
+    } else {
+      setCurrentFolderId(undefined);
+      setFolderHierarchy([]);
+      router.push('/google/drive');
+    }
   };
 
-  useEffect(() => {
-    driveFilesQuery.refetch();
-  }, [searchQuery, fileType, currentFolderId]);
+  // useEffect(() => {
+  //   driveFilesQuery.refetch();
+  // }, [searchQuery, fileType, currentFolderId]);
 
-  const getOwner = (owners) => {
+  if (driveFilesQuery.isError) {
+    return <div>Error: {driveFilesQuery.error.message}</div>;
+  }
+
+  const getOwner = (owners: any[]) => {
     if (owners && owners.length > 0) {
       return owners[0].displayName;
     }
     return 'Unknown';
   };
 
-  const getLocation = (file) => {
+  const getLocation = (file: any) => {
     if (file.shared) {
       return 'Shared with me';
     }
@@ -265,99 +149,87 @@ const Drive = () => {
     }
     return 'My Drive';
   };
-
-  if (driveFilesQuery.isError) {
-    return <div>Error: {driveFilesQuery.error.message}</div>;
-  }
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? 'Unknown' : date.toLocaleDateString();
+  };
 
   return (
-    <div className="flex-1 flex flex-col w-full ">
-      <div className="h-full w-full flex flex-col gap-5 border-r-2 ">
-        <Tabs
-          defaultValue="all"
-          className="h-full"
-          onValueChange={(value) => handleTabChange(value)}
-        >
-          <div className="flex justify-between border-t-2 border-b-2 p-5">
-            <h1 className="font-semibold text-xl">Google Drive</h1>
-
-            <TabsList className="ml-auto">
-              <TabsTrigger value="all" className="text-zinc-600 dark:text-zinc-200">All files</TabsTrigger>
-              <TabsTrigger value="docs" className="text-zinc-600 dark:text-zinc-200">Documents</TabsTrigger>
-              <TabsTrigger value="pdfs" className="text-zinc-600 dark:text-zinc-200">PDFs</TabsTrigger>
-              <TabsTrigger value="images" className="text-zinc-600 dark:text-zinc-200">Images</TabsTrigger>
-              <TabsTrigger value="spreadsheets" className="text-zinc-600 dark:text-zinc-200">Spreadsheets</TabsTrigger>
-            </TabsList>
-          </div>
-
-          <div className="flex-1 flex flex-col gap-2 h-full p-4">
-            <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-1">
-              <form>
-                <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search"
-                    className="pl-8"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                  />
-                </div>
-              </form>
-            </div>
-
-            {currentFolderId && (
-              <button onClick={handleBackClick} className="text-blue-600 hover:underline">
-                Back
-              </button>
-            )}
-
-            {["all", "docs", "pdfs", "images", "spreadsheets"].map((tabValue) => (
-              <TabsContent
-                key={tabValue}
-                value={tabValue}
-                className="m-0 flex-1 max-h-full overflow-auto"
-              >
-                {driveFilesQuery.isLoading ? (
-                  <div>Loading...</div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                      <TableHead>Name</TableHead>
-<TableHead>MIME Type</TableHead>
-<TableHead>Owner</TableHead>
-<TableHead>Location</TableHead>
-</TableRow>
-</TableHeader>
-<TableBody>
-  {!driveFilesQuery.data?.message &&
-    driveFilesQuery.data?.driveFiles?.map((file) => (
-      <TableRow
-        key={file.id}
-        onClick={() => {
-          if (file.mimeType === "application/vnd.google-apps.folder") {
-            handleFolderClick(file.id);
-          } else {
-            window.open(file.webViewLink, "_blank", "noopener,noreferrer");
-          }
-        }}
-        className="cursor-pointer"
-      >
-        <TableCell>{file.name}</TableCell>
-        <TableCell>{file.mimeType}</TableCell>
-        <TableCell>{getOwner(file.owners)}</TableCell>
-        <TableCell>{getLocation(file)}</TableCell>
-        <TableCell></TableCell>
-      </TableRow>
-    ))}
-</TableBody>
-</Table>
-)}
-</TabsContent>
-))}
-          </div>
-        </Tabs>
+    <div className="flex-1 flex flex-col w-full">
+      <div className="flex items-center space-x-2 mb-4">
+        <Input
+          type="text"
+          placeholder="Search files..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="max-w-sm"
+        />
+        <Search className="w-4 h-4 text-gray-500" />
       </div>
+
+      <Tabs defaultValue="all" className="mb-4" onValueChange={handleTabChange}>
+        <TabsList>
+          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="folders">Folders</TabsTrigger>
+          <TabsTrigger value="docs">Docs</TabsTrigger>
+          <TabsTrigger value="pdfs">PDFs</TabsTrigger>
+          <TabsTrigger value="images">Images</TabsTrigger>
+          <TabsTrigger value="spreadsheets">Spreadsheets</TabsTrigger>
+        </TabsList>
+      </Tabs>
+
+      <Breadcrumb className='cursor-pointer mb-4 w-3'>
+        
+        {folderHierarchy.map((folder, index) => (
+          <BreadcrumbItem key={folder.id}>
+            <BreadcrumbSeparator />
+            <BreadcrumbLink
+              onClick={() => index < folderHierarchy.length - 1 && handleFolderClick(folder.id)}
+            >
+              {folder.name}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        ))}
+      </Breadcrumb>
+
+      {driveFilesQuery.isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <Spinner />
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Owner</TableHead>
+              <TableHead>Last Modified</TableHead>
+              <TableHead>Location</TableHead>            
+            </TableRow>
+          </TableHeader>
+          <TableBody className=''>
+            {driveFilesQuery.data?.driveFiles?.map((file) => (
+              <TableRow key={file.id} className="font-medium hover:text-blue-600" >
+                <TableCell >
+                  {file.mimeType === 'application/vnd.google-apps.folder' ? (
+                    <div className="flex items-center cursor-pointer" onClick={() => handleFolderClick(file.id)}>
+                      <FolderIcon className="mr-2" />
+                      {file.name}
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <FileIcon className="mr-2" />
+                      {file.name}
+                    </div>
+                  )}
+                </TableCell>
+                <TableCell className='hover:text-blue-600'>{getOwner(file.owners)}</TableCell>
+                <TableCell className='hover:text-blue-600'>{formatDate(file.modifiedTime)}</TableCell>
+                <TableCell className='hover:text-blue-600'>{getLocation(file)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 };

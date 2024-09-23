@@ -29,7 +29,6 @@ export const useGetDriveFiles = (searchQuery: string = "", fileType?: string, fo
     keepPreviousData: true,
   });
 };
-
 // export const useGetCalendarEvents = (searchQuery: string = "", eventType?: string, calendarId?: string) => {
 //   return useQuery({
 //     queryKey: ["calendarEvents", searchQuery, eventType, calendarId],
@@ -43,6 +42,18 @@ export const useGetDriveFiles = (searchQuery: string = "", fileType?: string, fo
 // };
 
 // google.feature.ts
+
+export const useGetFolderDetails = (folderId: string) => {
+  return useQuery({
+    queryKey: ["folderDetails", folderId],
+    queryFn: async () => {
+      const data = await getFolderDetails(folderId);
+      console.log("Folder details:", data);
+      return data.folderDetails;
+    },
+    enabled: !!folderId,
+  });
+};
 
 export const useGetCalendarEvents = (searchQuery: string = "", eventType?: string, calendarId?: string) => {
   return useQuery({

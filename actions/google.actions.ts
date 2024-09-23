@@ -68,7 +68,40 @@ export const getInbox = async () => {
 
 
 }
+export const getFolderDetails = async (folderId: string) => {
+  try {
+    const token = await currentToken();
 
+    if (!token) {
+      throw new Error("User Access token not found!");
+    }
+
+    const { data: folderDetails } = await axios.create({
+      baseURL: process.env.API_URL,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).get(`/google/folder/${folderId}`);
+
+    return {
+      folderDetails: folderDetails,
+      message: null
+    };
+  } catch (error: any) {
+    if (error instanceof AxiosError) {
+      if (error.response) {
+        return {
+          message: (error.response?.data as any).message.toString(),
+          folderDetails: null,
+        };
+      }
+    }
+    return {
+      folderDetails: null,
+      message: error.message
+    }
+  }
+}
 // export const getDriveFiles = async () => {
 //     try {
 //         const token = await currentToken();
@@ -105,40 +138,40 @@ export const getInbox = async () => {
 // }
 
 export const getDriveFiles = async (query: { search?: string, fileType?: string, folderId?: string }) => {
-    try {
-      const token = await currentToken();
-  
-      if (!token) {
-        throw new Error("User Access token not found!");
-      }
-  
-      const { data: driveFiles } = await axios.create({
-        baseURL: process.env.API_URL,
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: query,
-      }).get(`/google/files`);
-  
-      return {
-        driveFiles: driveFiles as DriveFile[],
-        message: null
-      };
-    } catch (error: any) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          return {
-            message: (error.response?.data as any).message.toString(),
-            driveFiles: null,
-          };
-        }
-      }
-      return {
-        driveFiles: null,
-        message: error.message
+  try {
+    const token = await currentToken();
+
+    if (!token) {
+      throw new Error("User Access token not found!");
+    }
+
+    const { data: driveFiles } = await axios.create({
+      baseURL: process.env.API_URL,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: query,
+    }).get(`/google/files`);
+
+    return {
+      driveFiles: driveFiles as DriveFile[],
+      message: null
+    };
+  } catch (error: any) {
+    if (error instanceof AxiosError) {
+      if (error.response) {
+        return {
+          message: (error.response?.data as any).message.toString(),
+          driveFiles: null,
+        };
       }
     }
-  } 
+    return {
+      driveFiles: null,
+      message: error.message
+    }
+  }
+}
 
   export const getCalendarEvents = async (query: { search?: string, eventType?: string, calendarId?: string }) => {
     try {
