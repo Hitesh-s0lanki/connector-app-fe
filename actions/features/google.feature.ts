@@ -2,7 +2,7 @@ import { currentToken } from "@/lib/auth";
 import { Inbox } from "@/types/index.types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { getInbox, getDriveFiles,getCalendarEvents } from "../google.actions";
+import { getInbox, getDriveFiles,getCalendarEvents, getFolderDetails } from "../google.actions";
 import { AxiosError } from "axios";
 
 export const useGetInbox = () => {
