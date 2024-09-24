@@ -247,6 +247,78 @@ export const getDriveFiles = async (query: { search?: string, fileType?: string,
       };
     }
   };
+
+  export const deleteGoogleCalendarEvent = async (id:any) =>{
+    try {
+      const token = await currentToken();
+  
+      if (!token) {
+        throw new Error("User Access token not found!");
+      }
+  
+      const { data: deletedEvent } = await axios.create({
+        baseURL: process.env.API_URL,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).delete(`/google/event/delete/${id}`);
+      console.log(deletedEvent)
+      return {
+        deletedEvent,
+        message: null,
+      };
+    } catch (error: any) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          return {
+            message: (error.response?.data as any).message.toString(),
+            deletedEvent: null,
+          };
+        }
+      }
+  
+      return {
+        deletedEvent: null,
+        message: error.message,
+      };
+    }
+  }
+
+  export const updateGoogleCalendarEvent = async (eventData: any) => {
+    try {
+      const token = await currentToken();
+  
+      if (!token) {
+        throw new Error("User Access token not found!");
+      }
+  
+      const { data: updatedEvent } = await axios.create({
+        baseURL: process.env.API_URL,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).patch(`/google/event/update/${eventData.id}`, eventData);
+  
+      return {
+        updatedEvent,
+        message: null,
+      };
+    } catch (error: any) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          return {
+            message: (error.response?.data as any).message.toString(),
+            updatedEvent: null,
+          };
+        }
+      }
+  
+      return {
+        updatedEvent: null,
+        message: error.message,
+      };
+    }
+  };
   // export const getCalendarEvents = async (query: { search?: string, eventType?: string, calendarId?: string }) => {
   //   const token = await currentToken();
   

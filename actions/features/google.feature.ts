@@ -2,7 +2,7 @@ import { currentToken } from "@/lib/auth";
 import { Inbox } from "@/types/index.types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { getInbox, getDriveFiles,getCalendarEvents } from "../google.actions";
+import { getInbox, getDriveFiles,getCalendarEvents , createGoogleCalendarEvent ,deleteGoogleCalendarEvent} from "../google.actions";
 import { AxiosError } from "axios";
 
 export const useGetInbox = () => {
@@ -66,4 +66,25 @@ export const useGetCalendarEvents = (searchQuery: string = "", eventType?: strin
     keepPreviousData: true,
   });
 };
+
+
+export const usecreateGoogleCalendarEvent = (eventData: any) => {
+  return useQuery({
+    queryKey: ["createEvent", eventData],
+    queryFn: async () => {
+      const data = await createGoogleCalendarEvent(eventData);
+      return data;
+    },
+  });
+}
+
+export const useDeleteEvent = (id:any) =>{
+  return useQuery({
+    queryKey: ["deleteEvent"],
+    queryFn: async () => {
+      const data = await deleteGoogleCalendarEvent(id);
+      return data;
+    },
+  });
+}
 
