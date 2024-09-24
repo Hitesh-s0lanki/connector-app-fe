@@ -64,10 +64,9 @@ export const getInbox = async () => {
         }
     }
 
-    
-
 
 }
+
 export const getFolderDetails = async (folderId: string) => {
   try {
     const token = await currentToken();
@@ -102,45 +101,11 @@ export const getFolderDetails = async (folderId: string) => {
     }
   }
 }
-// export const getDriveFiles = async () => {
-//     try {
-//         const token = await currentToken();
-
-//         if (!token) {
-//             throw new Error("User Access token not found!");
-//         }
-
-//         const { data: driveFiles } = await axios.create({
-//             baseURL: process.env.API_URL,
-//             headers: {
-//                 Authorization: `Bearer ${token}`
-//             }
-//         }).get(`/google/files`);
-
-//         return {
-//             driveFiles: driveFiles as DriveFile[],
-//             message: null
-//         };
-//     } catch (error: any) {
-//         if (error instanceof AxiosError) {
-//             if (error.response) {
-//                 return {
-//                     message: (error.response?.data as any).message.toString(),
-//                     driveFiles: null,
-//                 };
-//             }
-//         }
-//         return {
-//             driveFiles: null,
-//             message: error.message
-//         }
-//     }
-// }
 
 export const getDriveFiles = async (query: { search?: string, fileType?: string, folderId?: string }) => {
   try {
     const token = await currentToken();
-
+    
     if (!token) {
       throw new Error("User Access token not found!");
     }
@@ -219,7 +184,7 @@ export const getDriveFiles = async (query: { search?: string, fileType?: string,
       if (!token) {
         throw new Error("User Access token not found!");
       }
-  
+      
       const { data: createdEvent } = await axios.create({
         baseURL: process.env.API_URL,
         headers: {
@@ -240,13 +205,47 @@ export const getDriveFiles = async (query: { search?: string, fileType?: string,
           };
         }
       }
-  
+      
       return {
         createdEvent: null,
         message: error.message,
       };
     }
   };
+  // export const getDriveFiles = async () => {
+  //     try {
+  //         const token = await currentToken();
+  
+  //         if (!token) {
+  //             throw new Error("User Access token not found!");
+  //         }
+  
+  //         const { data: driveFiles } = await axios.create({
+  //             baseURL: process.env.API_URL,
+  //             headers: {
+  //                 Authorization: `Bearer ${token}`
+  //             }
+  //         }).get(`/google/files`);
+  
+  //         return {
+  //             driveFiles: driveFiles as DriveFile[],
+  //             message: null
+  //         };
+  //     } catch (error: any) {
+  //         if (error instanceof AxiosError) {
+  //             if (error.response) {
+  //                 return {
+  //                     message: (error.response?.data as any).message.toString(),
+  //                     driveFiles: null,
+  //                 };
+  //             }
+  //         }
+  //         return {
+  //             driveFiles: null,
+  //             message: error.message
+  //         }
+  //     }
+  // }
   // export const getCalendarEvents = async (query: { search?: string, eventType?: string, calendarId?: string }) => {
   //   const token = await currentToken();
   
