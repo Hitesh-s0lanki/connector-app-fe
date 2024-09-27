@@ -27,6 +27,7 @@ export const useGetDriveFiles = (searchQuery: string = "", fileType?: string, fo
       return data;
     },
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   });
 };
 
